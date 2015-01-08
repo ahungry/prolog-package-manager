@@ -1,0 +1,58 @@
+% compiler: GNU Prolog 1.4.4
+% file    : pmmin.pro
+
+
+file_name('/home/mcarter/code/prolog/pmmin.pro').
+
+
+predicate(deps/2,2,static,private,monofile,global,2).
+
+
+clause(:-(deps(A,B),dep(A,B)),[
+    execute((dep)/2)]).
+
+
+clause(:-(deps(A,B),','(dep(A,C),deps(C,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    put_variable(y(1),1),
+    call((dep)/2),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((deps)/2)]).
+
+
+predicate(list_dependencies/2,6,static,private,monofile,global,1).
+
+
+clause(:-(list_dependencies(A,B),','(findall(C,deps(A,C),D),sort(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    put_structure((deps)/2,1),
+    unify_local_value(x(0)),
+    unify_variable(x(0)),
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((sort)/2)]).
+
+
+predicate(list_requires/2,10,static,private,monofile,global,1).
+
+
+clause(:-(list_requires(A,B),','(findall(C,dep(C,A),D),sort(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    get_variable(x(2),0),
+    put_structure((dep)/2,1),
+    unify_variable(x(0)),
+    unify_local_value(x(2)),
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((sort)/2)]).

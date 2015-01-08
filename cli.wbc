@@ -1,0 +1,93 @@
+% compiler: GNU Prolog 1.4.4
+% file    : cli.pro
+
+
+file_name('/home/mcarter/code/prolog/cli.pro').
+
+
+predicate(pp/2,3,static,private,monofile,global,1).
+
+
+clause(:-(pp(A,_),','(write(A),nl)),[
+    allocate(0),
+    call((write)/1),
+    deallocate,
+    execute((nl)/0)]).
+
+
+predicate(main/0,5,static,private,monofile,global,1).
+
+
+clause(:-(main,','(list_all_dependencies(firefox,A),','(write(firefox),','(write(' depends on:'),','(nl,','(maplist(pp,A,_),','(nl,','(write(firefox),','(write(' provides:'),','(nl,','(list_requires(firefox,B),','(maplist(pp,B,_),halt)))))))))))),[
+    allocate(2),
+    put_atom(firefox,0),
+    put_variable(y(0),1),
+    call((list_all_dependencies)/2),
+    put_atom(firefox,0),
+    call((write)/1),
+    put_atom(' depends on:',0),
+    call((write)/1),
+    call((nl)/0),
+    put_atom(pp,0),
+    put_value(y(0),1),
+    put_void(2),
+    call((maplist)/3),
+    call((nl)/0),
+    put_atom(firefox,0),
+    call((write)/1),
+    put_atom(' provides:',0),
+    call((write)/1),
+    call((nl)/0),
+    put_atom(firefox,0),
+    put_variable(y(1),1),
+    call((list_requires)/2),
+    put_atom(pp,0),
+    put_value(y(1),1),
+    put_void(2),
+    call((maplist)/3),
+    deallocate,
+    execute((halt)/0)]).
+
+
+predicate(main_deps/1,14,static,private,monofile,global,1).
+
+
+clause(:-(main_deps(A),','(list_all_dependencies(A,B),','(write(A),','(write(' depends on:'),','(nl,','(maplist(pp,B,_),halt)))))),[
+    allocate(2),
+    get_variable(y(0),0),
+    put_value(y(0),0),
+    put_variable(y(1),1),
+    call((list_all_dependencies)/2),
+    put_value(y(0),0),
+    call((write)/1),
+    put_atom(' depends on:',0),
+    call((write)/1),
+    call((nl)/0),
+    put_atom(pp,0),
+    put_value(y(1),1),
+    put_void(2),
+    call((maplist)/3),
+    deallocate,
+    execute((halt)/0)]).
+
+
+predicate(main_reqs/1,20,static,private,monofile,global,1).
+
+
+clause(:-(main_reqs(A),','(list_requires(A,B),','(write(A),','(write(' provides:'),','(nl,','(maplist(pp,B,_),halt)))))),[
+    allocate(2),
+    get_variable(y(0),0),
+    put_value(y(0),0),
+    put_variable(y(1),1),
+    call((list_requires)/2),
+    put_value(y(0),0),
+    call((write)/1),
+    put_atom(' provides:',0),
+    call((write)/1),
+    call((nl)/0),
+    put_atom(pp,0),
+    put_value(y(1),1),
+    put_void(2),
+    call((maplist)/3),
+    deallocate,
+    execute((halt)/0)]).

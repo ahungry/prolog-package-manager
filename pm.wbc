@@ -1,0 +1,233 @@
+% compiler: GNU Prolog 1.4.4
+% file    : pm.pro
+
+
+file_name('/home/mcarter/code/prolog/pm.pro').
+
+
+predicate(deps/2,5,static,private,monofile,local,2).
+
+
+clause(:-(deps(A,B),dep(A,B)),[
+    execute((dep)/2)]).
+
+
+clause(:-(deps(A,B),','(dep(A,C),deps(C,B,[]))),[
+    allocate(2),
+    get_variable(y(0),1),
+    put_variable(y(1),1),
+    call((dep)/2),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    put_nil(2),
+    deallocate,
+    execute((deps)/3)]).
+
+
+predicate(deps/3,12,static,private,monofile,local,3).
+
+
+clause(:-(deps(A,B,C),','(ground(A),','(\+(member(A,C)),','(append('.'(A,[]),C,D),','(dep(A,E),deps(E,B,D)))))),[
+    allocate(5),
+    get_variable(y(0),0),
+    get_variable(y(1),1),
+    get_variable(y(2),2),
+    put_value(y(0),0),
+    call((ground)/1),
+    put_structure((member)/2,0),
+    unify_local_value(y(0)),
+    unify_local_value(y(2)),
+    call((\+)/1),
+    put_list(0),
+    unify_local_value(y(0)),
+    unify_nil,
+    put_value(y(2),1),
+    put_variable(y(3),2),
+    call((append)/3),
+    put_value(y(0),0),
+    put_variable(y(4),1),
+    call((dep)/2),
+    put_unsafe_value(y(4),0),
+    put_value(y(1),1),
+    put_unsafe_value(y(3),2),
+    deallocate,
+    execute((deps)/3)]).
+
+
+clause(:-(deps(A,B,_),','(ground(A),dep(A,B))),[
+    allocate(2),
+    get_variable(y(0),0),
+    get_variable(y(1),1),
+    put_value(y(0),0),
+    call((ground)/1),
+    put_value(y(0),0),
+    put_value(y(1),1),
+    deallocate,
+    execute((dep)/2)]).
+
+
+clause(:-(deps(A,B,C),','(ground(B),','(\+(member(B,C)),','(append('.'(B,[]),C,D),','(dep(A,E),deps(E,B,D)))))),[
+    allocate(5),
+    get_variable(y(0),0),
+    get_variable(y(1),1),
+    get_variable(y(2),2),
+    put_value(y(1),0),
+    call((ground)/1),
+    put_structure((member)/2,0),
+    unify_local_value(y(1)),
+    unify_local_value(y(2)),
+    call((\+)/1),
+    put_list(0),
+    unify_local_value(y(1)),
+    unify_nil,
+    put_value(y(2),1),
+    put_variable(y(3),2),
+    call((append)/3),
+    put_value(y(0),0),
+    put_variable(y(4),1),
+    call((dep)/2),
+    put_unsafe_value(y(4),0),
+    put_value(y(1),1),
+    put_unsafe_value(y(3),2),
+    deallocate,
+    execute((deps)/3)]).
+
+
+predicate(list_dependencies/2,30,static,private,monofile,local,1).
+
+
+clause(:-(list_dependencies(A,B),','(findall(C,dep(A,C),D),list_unique(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    put_structure((dep)/2,1),
+    unify_local_value(x(0)),
+    unify_variable(x(0)),
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((list_unique)/2)]).
+
+
+predicate(list_requires/2,34,static,private,monofile,local,1).
+
+
+clause(:-(list_requires(A,B),','(findall(C,dep(C,A),D),list_unique(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    get_variable(x(2),0),
+    put_structure((dep)/2,1),
+    unify_variable(x(0)),
+    unify_local_value(x(2)),
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((list_unique)/2)]).
+
+
+predicate(list_all_dependencies/2,39,static,private,monofile,local,1).
+
+
+clause(:-(list_all_dependencies(A,B),','(findall(C,deps(A,C),D),list_unique(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    put_structure((deps)/2,1),
+    unify_local_value(x(0)),
+    unify_variable(x(0)),
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((list_unique)/2)]).
+
+
+predicate(list_all_requires/2,44,static,private,monofile,local,1).
+
+
+clause(:-(list_all_requires(A,B),','(findall(C,deps(C,A,[]),D),list_unique(D,B))),[
+    allocate(2),
+    get_variable(y(0),1),
+    get_variable(x(2),0),
+    put_structure((deps)/3,1),
+    unify_variable(x(0)),
+    unify_local_value(x(2)),
+    unify_nil,
+    put_variable(y(1),2),
+    call((findall)/3),
+    put_unsafe_value(y(1),0),
+    put_value(y(0),1),
+    deallocate,
+    execute((list_unique)/2)]).
+
+
+predicate(list_unique/2,49,static,private,monofile,local,2).
+
+
+clause(list_unique([],[]),[
+    get_nil(0),
+    get_nil(1),
+    proceed]).
+
+
+clause(:-(list_unique('.'(A,B),C),list_unique(B,'.'(A,[]),C)),[
+    get_variable(x(2),1),
+    get_list(0),
+    unify_variable(x(3)),
+    unify_variable(x(0)),
+    put_list(1),
+    unify_value(x(3)),
+    unify_nil,
+    execute((list_unique)/3)]).
+
+
+predicate(list_unique/3,54,static,private,monofile,local,3).
+
+
+clause(list_unique([],A,A),[
+    get_nil(0),
+    get_value(x(2),1),
+    proceed]).
+
+
+clause(:-(list_unique('.'(A,B),C,D),','(\+(member(A,C)),','(append('.'(A,[]),C,E),list_unique(B,E,D)))),[
+    allocate(5),
+    get_list(0),
+    unify_variable(y(0)),
+    unify_variable(y(1)),
+    get_variable(y(2),1),
+    get_variable(y(3),2),
+    put_structure((member)/2,0),
+    unify_value(y(0)),
+    unify_local_value(y(2)),
+    call((\+)/1),
+    put_list(0),
+    unify_value(y(0)),
+    unify_nil,
+    put_value(y(2),1),
+    put_variable(y(4),2),
+    call((append)/3),
+    put_value(y(1),0),
+    put_unsafe_value(y(4),1),
+    put_value(y(3),2),
+    deallocate,
+    execute((list_unique)/3)]).
+
+
+clause(:-(list_unique('.'(A,B),C,D),','(member(A,C),','(=(E,C),list_unique(B,E,D)))),[
+    allocate(3),
+    get_variable(y(1),1),
+    get_variable(y(2),2),
+    get_list(0),
+    unify_variable(x(0)),
+    unify_variable(y(0)),
+    put_value(y(1),1),
+    call((member)/2),
+    put_value(y(1),1),
+    put_value(y(0),0),
+    put_value(y(2),2),
+    deallocate,
+    execute((list_unique)/3)]).

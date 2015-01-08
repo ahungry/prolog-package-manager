@@ -1,0 +1,40 @@
+#!/bin/sh
+
+case $1 in
+    php-deps)
+	time php ./pm.php deps $2
+	;;
+    php-reqs)
+	time php ./pm.php reqs $2
+	;;
+    pro-int-deps)
+	time gprolog \
+	    --consult-file packages \
+	    --consult-file pm \
+	    --consult-file cli \
+	    --query-goal "main_deps($2)"
+	;;
+    pro-int-reqs)
+	time gprolog \
+	    --consult-file packages \
+	    --consult-file pm \
+	    --consult-file cli \
+	    --query-goal "main_reqs($2)"
+	;;
+    pro-deps)
+	time gprolog \
+	    --entry-goal 'load(packages),load(pm),load(cli)' \
+	    --query-goal "main_deps($2)"
+	;;
+    pro-reqs)
+	time gprolog \
+	    --entry-goal 'load(packages),load(pm),load(cli)' \
+	    --query-goal "main_reqs($2)"
+	;;
+    compile)
+	gplc -w ./*pro
+	;;
+    *)
+	echo "Usage: Call with ./cli [php|pro|pro-int]-[deps|reqs] package-name"
+	;;
+esac	
