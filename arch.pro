@@ -55,4 +55,5 @@ list_rels(X, Rl) :-
 list_rels_recursively(X, Ys) :-
   list_rels(X, Zs),
   maplist(write, Zs),
-  maplist(list_rels_recursively, Zs, Ys).
+  maplist(list_rels_recursively, Zs, Xs),
+  append([X, Zs], Xs, Ys).
