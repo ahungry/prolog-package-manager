@@ -31,24 +31,6 @@ rel(w_ahungry, c_ahungry).
 rel(c_ahungry, d_mysql).
 rel(w_langpop, c_langpop).
 
-rels(X, Y) :-
-  rel(X, Y).
-
-rels(X, Y) :-
-  rel(X, Z),
-  rels(Z, Y, []).
-
-rels(X,Y,S) :-
-  ground(X),
-  \+member(X, S),
-  append([X], S, T),
-  rel(X, Z),
-  rels(Z, Y, T).
-
-rels(X, Y, _) :-
-  ground(X),
-  rel(X, Y).
-
 % Drill down the path, finding the end node.
 chain(X, Ys) :- rel(X, Z), chain(Z, Ys1), append([X], Ys1, Ys).
 chain(X, Ys) :- ground(X), Ys = [X].
@@ -63,18 +45,10 @@ reversed_arrows(Ls, Z) :- reverse(Ls, Rls), arrows(Rls, Z).
 inner_to_outer(X, Ys) :- all_chains(X, Cs), maplist(arrows, Cs, Ys).
 outer_to_inner(X, Ys) :- all_chains(X, Cs), reverse(Cs, Rcs), maplist(reversed_arrows, Rcs, Ys).
 
-printer_oti(X) :- maplist(format('~w~n'), outer_to_inner())
+printer_oti(X) :-
+  outer_to_inner(X, Ys),
+  maplist(format('~w~n'), Ys).
 
-
-
-list_rels(X, Rl) :-
-  findall(Y, rel(X, Y), Rl).
-
-list_rels_recursively(X, Ys) :-
-  list_rels(X, Zs),
-  format('X is now ~w, with deps: ~n', X),
-  write(Zs),nl,
-  %maplist(write, Zs),
-  maplist(list_rels_recursively, Zs, Xs),
-  append([X, Xs], Zs, Ys).
-  %append([X, Xs], Zs, Ys).
+printer_ito(X) :-
+  inner_to_outer(X, Ys),
+  maplist(format('~w~n'), Ys).
