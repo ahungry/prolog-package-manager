@@ -1,8 +1,8 @@
-% compiler: GNU Prolog 1.4.4
-% file    : packages.pro
+% compiler: GNU Prolog 1.4.5
+% file    : ./packages.pro
 
 
-file_name('/home/mcarter/code/prolog/packages.pro').
+file_name('/home/mcarter/src/prolog-package-manager/packages.pro').
 
 
 predicate(dep/2,1,static,private,monofile,global,17302).

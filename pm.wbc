@@ -1,8 +1,8 @@
-% compiler: GNU Prolog 1.4.4
-% file    : pm.pro
+% compiler: GNU Prolog 1.4.5
+% file    : ./pm.pro
 
 
-file_name('/home/mcarter/code/prolog/pm.pro').
+file_name('/home/mcarter/src/prolog-package-manager/pm.pro').
 
 
 predicate(deps/2,5,static,private,monofile,local,2).

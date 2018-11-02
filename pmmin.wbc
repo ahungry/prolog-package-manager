@@ -1,8 +1,8 @@
-% compiler: GNU Prolog 1.4.4
-% file    : pmmin.pro
+% compiler: GNU Prolog 1.4.5
+% file    : ./pmmin.pro
 
 
-file_name('/home/mcarter/code/prolog/pmmin.pro').
+file_name('/home/mcarter/src/prolog-package-manager/pmmin.pro').
 
 
 predicate(deps/2,2,static,private,monofile,global,2).

@@ -1,5 +1,5 @@
-:- use_module(packages).
-:- module(pm, [public/2]).
+%:- module(pm, [public/2]).
+%:- use_module(packages).
 
 % general seek
 deps(X,Y) :-

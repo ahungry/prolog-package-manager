@@ -1,8 +1,8 @@
-% compiler: GNU Prolog 1.4.4
-% file    : cli.pro
+% compiler: GNU Prolog 1.4.5
+% file    : ./cli.pro
 
 
-file_name('/home/mcarter/code/prolog/cli.pro').
+file_name('/home/mcarter/src/prolog-package-manager/cli.pro').
 
 
 predicate(pp/2,3,static,private,monofile,global,1).
