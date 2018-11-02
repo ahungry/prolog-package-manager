@@ -50,10 +50,10 @@ rels(X, Y, _) :-
   dep(X, Y).
 
 list_rels(X, Rl) :-
-  findall(Y, rel(X, Y), Rl).
+  findall(Y, rels(X, Y), Rl).
 
 list_rels_recursively(X, Ys) :-
   list_rels(X, Zs),
-  maplist(write, Zs),
+  %maplist(write, Zs),
   maplist(list_rels_recursively, Zs, Xs),
   append([X, Zs], Xs, Ys).
