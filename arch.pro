@@ -52,3 +52,10 @@ printer_oti(X) :-
 printer_ito(X) :-
   inner_to_outer(X, Ys),
   maplist(format('~w~n'), Ys).
+
+prop(Goal, Set) :-
+  findall(X, sys(X), Systems),
+  maplist(Goal, Systems, Set).
+
+hosts(Hosts) :- prop(host, Hosts).
+ports(Ports) :- prop(port, Ports).
