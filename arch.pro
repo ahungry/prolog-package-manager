@@ -47,13 +47,34 @@ rels(X,Y,S) :-
 
 rels(X, Y, _) :-
   ground(X),
-  dep(X, Y).
+  rel(X, Y).
+
+% Drill down the path, finding the end node.
+chain(X, Ys) :- rel(X, Z), chain(Z, Ys1), append([X], Ys1, Ys).
+chain(X, Ys) :- ground(X), Ys = [X].
+
+all_chains(X, S) :- findall(Ys, chain(X, Ys), S).
+
+fold_arrows(X, Y, Z) :- string_concat(X, ' -> ', T), string_concat(T, Y, Z).
+
+arrows([H|T], Z) :- foldl(fold_arrows, T, H, Z).
+reversed_arrows(Ls, Z) :- reverse(Ls, Rls), arrows(Rls, Z).
+
+inner_to_outer(X, Ys) :- all_chains(X, Cs), maplist(arrows, Cs, Ys).
+outer_to_inner(X, Ys) :- all_chains(X, Cs), reverse(Cs, Rcs), maplist(reversed_arrows, Rcs, Ys).
+
+printer_oti(X) :- maplist(format('~w~n'), outer_to_inner())
+
+
 
 list_rels(X, Rl) :-
-  findall(Y, rels(X, Y), Rl).
+  findall(Y, rel(X, Y), Rl).
 
 list_rels_recursively(X, Ys) :-
   list_rels(X, Zs),
+  format('X is now ~w, with deps: ~n', X),
+  write(Zs),nl,
   %maplist(write, Zs),
   maplist(list_rels_recursively, Zs, Xs),
-  append([X, Zs], Xs, Ys).
+  append([X, Xs], Zs, Ys).
+  %append([X, Xs], Zs, Ys).
