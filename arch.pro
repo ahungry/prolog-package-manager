@@ -59,3 +59,8 @@ prop(Goal, Set) :-
 
 hosts(Hosts) :- prop(host, Hosts).
 ports(Ports) :- prop(port, Ports).
+
+make_dot_file(X) :-
+  format('digraph Application {~nrankdir=LR;~nnode [shape=box,style=filled,fillcolor="#C0D0C0"];~n'),
+  printer_oti(X),
+  format('}~n').

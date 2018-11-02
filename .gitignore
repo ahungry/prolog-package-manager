@@ -1,3 +1,7 @@
+/arch.dot
+/arch.jpg
+/arch.png
+/arch.ps
 *db
 !clean-packages.db
 *.wbc
