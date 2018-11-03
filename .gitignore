@@ -1,6 +1,7 @@
 /arch.dot
 /arch.jpg
 /arch.png
+/arch.pdf
 /arch.ps
 *db
 !clean-packages.db

@@ -1,3 +1,4 @@
+# -*- mode: Makefile -*-
 all: arch.png arch.pdf
 
 clean:
@@ -17,6 +18,6 @@ arch.png: arch.ps
 
 # Generate from prolog
 arch.dot:
-	swipl -q -l arch.pro -t "make_dot_file('w_ahungry')" | tee arch.dot
+	swipl -q -l arch.pro -t "make_dot_file()" | tee arch.dot
 
 .PHONY:

@@ -1,3 +1,5 @@
+% -*- mode: prolog -*-
+
 % Track some system/architecture level dependencies
 
 % Prefixes: w = website, d = database, c = app code, a = api
@@ -32,7 +34,10 @@ rel(c_ahungry, d_mysql).
 rel(w_langpop, c_langpop).
 
 % Drill down the path, finding the end node.
-chain(X, Ys) :- rel(X, Z), chain(Z, Ys1), append([X], Ys1, Ys).
+% This recursively does the chain, maybe overkill for dot output, as we
+% can iterate over all nodes quite easily.
+%chain(X, Ys) :- rel(X, Z), chain(Z, Ys1), append([X], Ys1, Ys).
+chain(X, Ys) :- rel(X, Z), append([X], [Z], Ys).
 chain(X, Ys) :- ground(X), Ys = [X].
 
 all_chains(X, S) :- findall(Ys, chain(X, Ys), S).
@@ -60,7 +65,8 @@ prop(Goal, Set) :-
 hosts(Hosts) :- prop(host, Hosts).
 ports(Ports) :- prop(port, Ports).
 
-make_dot_file(X) :-
+make_dot_file() :-
   format('digraph Application {~nrankdir=LR;~nnode [shape=box,style=filled,fillcolor="#C0D0C0"];~n'),
-  printer_oti(X),
+  findall(X, sys(X), Systems),
+  maplist(printer_oti, Systems),
   format('}~n').
